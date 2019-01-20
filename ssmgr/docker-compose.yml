@@ -1,0 +1,11 @@
+version: '3'
+services:
+  mgr:
+    image: shadowsocks/shadowsocks-libev
+    ports:
+      - 6887:6887/udp
+    # environment: 
+      # METHOD: aes-256-cfb
+    command: ss-manager -m aes-256-cfb -u --manager-address 127.0.0.1:6887
+    # restart: always
+    user: root
