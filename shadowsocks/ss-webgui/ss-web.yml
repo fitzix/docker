@@ -2,8 +2,8 @@
 type: m
 
 manager:
-  address: 127.0.0.1:6888
-  password: 'synu.fitz'
+  address: ss-mgr:6888
+  password: synu.fitz
   # 这部分的端口和密码需要跟上一步 manager 参数里的保持一致，以连接 type s 部分监听的 tcp 端口
 plugins:
   flowSaver:
@@ -18,18 +18,18 @@ plugins:
     use: true
   email:
     use: true
-    type: 'smtp'
-    username: 'kshadowsock@gmail.com'
-    host: 'smtp.gmail.com'
+    type: smtp
+    username: kshadowsock@gmail.com
+    host: smtp.gmail.com
     # 这部分的邮箱和密码是用于发送注册验证邮件，重置密码邮
   giftcard:
     # 充值码
     use: true
   webgui:
     use: true
-    host: '127.0.0.1'
-    port: '6889'
-    site: 'https://scrollx.xyz'
+    host: 127.0.0.1
+    port: 6889
+    site: https://scrollx.xyz
     # cdn: 'http://xxx.com' # 静态资源cdn地址，可省略
     # icon: 'icon.png' # 自定义首页图标，默认路径在 ~/.ssmgr 可省略
     # skin: 'default' # 首页皮肤，可省略
@@ -51,9 +51,9 @@ plugins:
     # client_id: 'AfOrCr3cjXX7v-f2oTX_lNHLq-XErKkVBejp6UCfK8kyzRGnbZKLClkIi79BWKYQ081mzsSSZEm9nlhu'
     # client_secret: 'EMzUitIyCByz8eD7BWKL--uJhIo5vHmBLKpoA6WfsqWQ_M70mPj09hV2xxCGTazvL6PFU2A1lonQSmri'
 
-db: 'webgui.sqlite'
+db: webgui.sqlite
 
 redis: 
-  host: 127.0.0.1
+  host: ss-redis
   port: 6379
   password: 0

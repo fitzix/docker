@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  ss-webgui:
+    image: fitzix/ss-webgui
+    container_name: ss-webgui
+    networks:
+      - fitzix-shadowsocks   
+    build: ./ss-webgui
+    depends_on:
+      - ss-redis
+      - ss-mgr
+
+  ss-mgr:
+    image: fitzix/ss-mgr
+    container_name: ss-mgr
+    networks:
+      - fitzix-shadowsocks
+    build: ./ss-mgr
+    depends_on:
+      - ss-libev
+
+  ss-libev:
+    image: fitzix/ss-libev
+    container_name: ss-libev
+    # restart: always
+    network_mode: 'host'
+    build: ./ss-libev
+
+  ss-redis:
+    image: redis:alpine
+    container_name: ss-redis
+    networks:
+      - fitzix-shadowsocks 
+
+networks:
+  fitzix-shadowsocks:
