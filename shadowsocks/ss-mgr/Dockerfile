@@ -2,7 +2,7 @@ FROM node:8-alpine
 
 LABEL maintainer="fitzix <caojunkaiv@gmail.com>"
 
-EXPOSE 6888
+EXPOSE 6888/tcp
 
 WORKDIR /shadowsocks
 
