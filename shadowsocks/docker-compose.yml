@@ -13,6 +13,8 @@ services:
   ss-mgr:
     image: fitzix/ss-mgr
     container_name: ss-mgr
+    ports:
+      - "6888:6888"
     networks:
       - fitzix-shadowsocks
     depends_on:
