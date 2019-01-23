@@ -1,8 +1,7 @@
 type: s
 
 shadowsocks:
-  # address: 172.17.0.1:6887
-  address: 192.168.65.1:6887
+  address: 172.17.0.1:6887
   # 这里的地址和端口需要跟上一步的 --manager-address 参数保持一致，连接上述 udp 端口
 manager:
   address: 127.0.0.1:6888
