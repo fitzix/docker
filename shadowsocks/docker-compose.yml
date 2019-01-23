@@ -6,7 +6,6 @@ services:
     container_name: ss-webgui
     networks:
       - fitzix-shadowsocks   
-    build: ./ss-webgui
     depends_on:
       - ss-redis
       - ss-mgr
@@ -16,7 +15,6 @@ services:
     container_name: ss-mgr
     networks:
       - fitzix-shadowsocks
-    build: ./ss-mgr
     depends_on:
       - ss-libev
 
@@ -25,7 +23,6 @@ services:
     container_name: ss-libev
     # restart: always
     network_mode: 'host'
-    build: ./ss-libev
 
   ss-redis:
     image: redis:alpine
