@@ -1,7 +1,6 @@
 #!/usr/bin/sh
 
 # wget -qO- https://raw.githubusercontent.com/fitzix/docker/master/shadowsocks/install-docker.sh | sh
-# wget -O /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.23.2/docker-compose-Linux-x86_64 && chmod +x /usr/local/bin/docker-compose
 
 apt remove docker docker-engine docker.io containerd runc
 
@@ -18,3 +17,13 @@ add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(
 apt update
 
 apt install -y docker-ce
+
+# install docker compos
+echo "start install docker compose"
+
+wget -O "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+echo "download compose file from fitzix github"
+
+wget "https://raw.githubusercontent.com/fitzix/docker/master/shadowsocks/docker-compose.yml"
