@@ -63,5 +63,5 @@ if [[ $is_install_webgui == 'y' ]]; then
 else
 	docker-compose stop ss-mgr
 	docker-compose pull
-	docker-composer up -d --force-recreate ss-mgr
+	docker-compose up -d --force-recreate ss-mgr
 fi
