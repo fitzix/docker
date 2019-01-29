@@ -21,7 +21,7 @@ install_docker() {
 }
 
 install_docker_compose() {
-	wget -O "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+	curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 	chmod +x /usr/local/bin/docker-compose
 }
 
@@ -52,7 +52,7 @@ check_docker
 check_docker_compose
 
 echo "download compose file from fitzix github"
-wget -Oq- "https://raw.githubusercontent.com/fitzix/docker/master/shadowsocks/docker-compose.yml" docker-compose.yml
+curl -sO 'https://raw.githubusercontent.com/fitzix/docker/master/shadowsocks/docker-compose.yml'
 
 read -p '是否安装webgui? (y/n) ' is_install_webgui
 
