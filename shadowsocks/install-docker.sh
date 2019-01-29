@@ -52,7 +52,7 @@ check_docker
 check_docker_compose
 
 echo "download compose file from fitzix github"
-wget "https://raw.githubusercontent.com/fitzix/docker/master/shadowsocks/docker-compose.yml"
+wget "https://raw.githubusercontent.com/fitzix/docker/master/shadowsocks/docker-compose.yml" -O docker-compose.yml
 
 read -p '是否安装webgui? (y/n) ' is_install_webgui
 
