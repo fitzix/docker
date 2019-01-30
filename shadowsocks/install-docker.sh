@@ -57,11 +57,11 @@ curl -sO 'https://raw.githubusercontent.com/fitzix/docker/master/shadowsocks/doc
 read -p '是否安装webgui? (y/n) ' is_install_webgui
 
 if [ $is_install_webgui == 'y' ]; then
-	docker-compose stop ss-webgui
+	docker-compose down
 	docker-compose pull
 	docker-composer up -d --force-recreate ss-webgui
 else
-	docker-compose stop ss-mgr
+	docker-compose down
 	docker-compose pull
 	docker-compose up -d --force-recreate ss-mgr
 fi
