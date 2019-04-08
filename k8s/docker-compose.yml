@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  etcd:
+    container_name: etcd
+  
+
+
+networks:
+  app_net:

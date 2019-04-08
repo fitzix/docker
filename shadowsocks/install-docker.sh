@@ -1,20 +1,54 @@
-#!/usr/bin/sh
+#!/bin/bash
 
-# wget -qO- https://raw.githubusercontent.com/fitzix/docker/master/shadowsocks/install-docker.sh | sh
-# wget -O /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.23.2/docker-compose-Linux-x86_64 && chmod +x /usr/local/bin/docker-compose
+# Color
 
-apt remove docker docker-engine docker.io containerd runc
+install_docker() {
+	curl -fsSL https://get.docker.com -o get-docker.sh
+	bash get-docker.sh
+}
 
-apt update
+install_docker_compose() {
+	curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+	chmod +x /usr/local/bin/docker-compose
+}
 
-apt install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+check_docker() {
+	if [ -x "$(command -v docker)" ]; then
+		echo "docker is installed"
+		# command
+	else
+		echo "Install docker"
+		# command
+		install_docker
+	fi
+}
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+check_docker_compose() {
+	if [ -x "$(command -v docker-compose)" ]; then
+		echo "docker-compose is installed"
+		# command
+	else
+		echo "Install docker-compose"
+		# command
+		install_docker_compose
+	fi
+}
 
-apt fingerprint 0EBFCD88
+# check docker
+check_docker
+check_docker_compose
 
-add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+echo "download compose file from fitzix github"
+curl -sO 'https://raw.githubusercontent.com/fitzix/docker/master/shadowsocks/docker-compose.yml'
 
-apt update
+read -p '是否安装webgui? (y/n) ' is_install_webgui
 
-apt install -y docker-ce
+if [ $is_install_webgui == 'y' ]; then
+	docker-compose down
+	docker-compose pull
+	docker-composer up -d --force-recreate ss-webgui
+else
+	docker-compose down
+	docker-compose pull
+	docker-compose up -d --force-recreate ss-mgr
+fi

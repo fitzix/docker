@@ -1,5 +1,11 @@
 FROM shadowsocks/shadowsocks-libev
 
+ENV TZ 'Asia/Shanghai'
+
+RUN apk --update add tzdata \
+    && cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
+    && apk del tzdata
+
 EXPOSE 6887/udp
 
 USER root
