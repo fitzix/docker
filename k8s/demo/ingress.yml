@@ -1,0 +1,37 @@
+#apiVersion: extensions/v1beta1
+#kind: Ingress
+#metadata:
+#  name: test
+#spec:
+#  rules:
+#  - host: foo.bar.com
+#    http:
+#      paths:
+#      - backend:
+#          serviceName: s1
+#          servicePort: 80
+#  - host: bar.foo.com
+#    http:
+#      paths:
+#      - backend:
+#          serviceName: s2
+#          servicePort: 80
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: test-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+    - hosts:
+      - fitzix.io
+      secretName: tls-ingress
+  rules:
+    - host: fitzix.io
+      http:
+        paths:
+          - backend:
+              serviceName: nginx-service
+              servicePort: 80
