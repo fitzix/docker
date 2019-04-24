@@ -61,18 +61,6 @@ services:
     command: ["--span-storage.type=elasticsearch", "--log-level=debug"]
     depends_on:
       - agent
-    
-  example-hotrod:
-    image: jaegertracing/example-hotrod
-    environment: 
-      - JAEGER_AGENT_HOST=agent
-      - JAEGER_AGENT_PORT=6831
-    restart: on-failure
-    command: all
-    ports:
-      - "8080-8083:8080-8083"
-    networks:
-      - elastic-jaeger
 
 networks:
   elastic-jaeger:

@@ -1,0 +1,10 @@
+{
+    "signing": {
+        "default": {
+            "expiry": "168h"
+        },
+        "profiles": {
+        }
+    }
+}
+
