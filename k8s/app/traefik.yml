@@ -1,0 +1,440 @@
+## Default values for Traefik
+image: traefik
+imageTag: 1.7.9
+
+testFramework:
+  image: "dduportal/bats"
+  tag: "0.4.0"
+
+## can switch the service type to NodePort if required
+serviceType: LoadBalancer
+# loadBalancerIP: ""
+# loadBalancerSourceRanges: []
+whiteListSourceRange: []
+externalTrafficPolicy: Cluster
+replicas: 1
+# startupArguments:
+#   - "--ping"
+#   - "--ping.entrypoint=http"
+
+podDisruptionBudget: {}
+  # maxUnavailable: 1
+  # minAvailable: 2
+
+# priorityClassName: ""
+
+# rootCAs: []
+
+resources: {}
+
+debug:
+  enabled: false
+
+deploymentStrategy: {}
+  # rollingUpdate:
+  #   maxSurge: 1
+  #   maxUnavailable: 0
+  # type: RollingUpdate
+
+securityContext: {}
+env: {}
+
+nodeSelector: {}
+  # key: value
+affinity: {}
+  # key: value
+tolerations: []
+# - key: "key"
+#   operator: "Equal|Exists"
+#   value: "value"
+#   effect: "NoSchedule|PreferNoSchedule|NoExecute(1.6 only)"
+## Kubernetes ingress filters
+# kubernetes:
+  # endpoint:
+  # namespaces:
+  # - default
+  # labelSelector:
+  # ingressClass:
+  # ingressEndpoint:
+  #   hostname: "localhost"
+  #   ip: "127.0.0.1"
+  #   publishedService: "namespace/servicename"
+  #   useDefaultPublishedService: false
+proxyProtocol:
+  enabled: false
+  # trustedIPs is required when enabled
+  trustedIPs: []
+  # - 10.0.0.0/8
+forwardedHeaders:
+  enabled: false
+  # trustedIPs is required when enabled
+  trustedIPs: []
+  # - 10.0.0.0/8
+
+## Add arbitrary ConfigMaps to deployment
+## Will be mounted to /configs/, i.e. myconfig.json would
+## be mounted to /configs/myconfig.json.
+configFiles: {}
+  # myconfig.json: |
+  #   filecontents...
+
+## Add arbitrary Secrets to deployment
+## Will be mounted to /secrets/, i.e. file.name would
+## be mounted to /secrets/mysecret.txt.
+## The contents will be base64 encoded when added
+secretFiles: {}
+  # mysecret.txt: |
+  #   filecontents...
+
+ssl:
+  enabled: true
+  enforced: true
+  permanentRedirect: true
+  upstream: false
+  insecureSkipVerify: false
+  generateTLS: false
+  # defaultCN: "example.com"
+    # or *.example.com
+  defaultSANList: []
+    # - example.com
+    # - test1.example.com
+  defaultIPList: []
+    # - 1.2.3.4
+  # cipherSuites: []
+  # https://docs.traefik.io/configuration/entrypoints/#specify-minimum-tls-version
+  # tlsMinVersion: VersionTLS12
+  defaultCert: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZVekNDQkR1Z0F3SUJBZ0lTQTFkVjdPMm1qYjlDTzhaU25lR01CN0hlTUEwR0NTcUdTSWIzRFFFQkN3VUEKTUVveEN6QUpCZ05WQkFZVEFsVlRNUll3RkFZRFZRUUtFdzFNWlhRbmN5QkZibU55ZVhCME1TTXdJUVlEVlFRRApFeHBNWlhRbmN5QkZibU55ZVhCMElFRjFkR2h2Y21sMGVTQllNekFlRncweE9UQTBNalV4TlRFeU1UUmFGdzB4Ck9UQTNNalF4TlRFeU1UUmFNQmd4RmpBVUJnTlZCQU1NRFNvdWMyTnliMnhzZUM1NGVYb3dnZ0VpTUEwR0NTcUcKU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRRFVRY2o2ZHdxV0o0NFh1V1VPSWFSeUZ3T0VTTjNyNHo5RApTeldja0RjdXU5ZDZxRnMzU0xGZERua28zdWg2YTZramRyeGVIbkdqQ1FmUlg4V1dmQjhHekFDMDQyYTltazNZCnJ5SWt1aWVFVnZVL3BrTU9lS0c0WmFSL2dYNUJRMTVRWFNOOHhaVk1CekhDUE1aUm9PQnJyUmRGN1hTSlQ5UnQKTnhKYTNHb0J0NjFYZ1RiS1VJL2Jzd1RURE0xQXZ2dUxrMWpodmUxV2RHZ2FLc1I2UGpaSFRLSmRNRXZiNWtDeApoUE5jd3lYbVVSVlZPaWFvb0V2aWpVaDBXc2pIUnN0QmxFZkttSjZxWFNnODQrREtCbnFhOFdjb0tIaTBZeUNGCjlYTU9lUEVmcWhzclRyUzl1ZkRwd09zZ2pWbGdhNnpTdzl0L3BHYjFHVTJSREdtaC9ocDNBZ01CQUFHamdnSmoKTUlJQ1h6QU9CZ05WSFE4QkFmOEVCQU1DQmFBd0hRWURWUjBsQkJZd0ZBWUlLd1lCQlFVSEF3RUdDQ3NHQVFVRgpCd01DTUF3R0ExVWRFd0VCL3dRQ01BQXdIUVlEVlIwT0JCWUVGTi93RmUrUjdKdWhBUGN0K29uYjkvb2ZHU3FNCk1COEdBMVVkSXdRWU1CYUFGS2hLYW1NRWZkMjY1dEU1dDZaRlplL3pxT3loTUc4R0NDc0dBUVVGQndFQkJHTXcKWVRBdUJnZ3JCZ0VGQlFjd0FZWWlhSFIwY0RvdkwyOWpjM0F1YVc1MExYZ3pMbXhsZEhObGJtTnllWEIwTG05eQpaekF2QmdnckJnRUZCUWN3QW9ZamFIUjBjRG92TDJObGNuUXVhVzUwTFhnekxteGxkSE5sYm1OeWVYQjBMbTl5Clp5OHdHQVlEVlIwUkJCRXdENElOS2k1elkzSnZiR3g0TG5oNWVqQk1CZ05WSFNBRVJUQkRNQWdHQm1lQkRBRUMKQVRBM0Jnc3JCZ0VFQVlMZkV3RUJBVEFvTUNZR0NDc0dBUVVGQndJQkZocG9kSFJ3T2k4dlkzQnpMbXhsZEhObApibU55ZVhCMExtOXlaekNDQVFVR0Npc0dBUVFCMW5rQ0JBSUVnZllFZ2ZNQThRQjNBSFIrMm9NeHJUTVFrU0djCnppVlBRbkRDdi8xZVFpQUl4amMxZWVZUWU4eFdBQUFCYWxWRTBXSUFBQVFEQUVnd1JnSWhBTjhISkxiVDBINS8KSGV6S0xoVEQ5OVNRZlRQR21kZDh5OGtDZHMwSmhBbFZBaUVBanFMWkdEN3pURE5ld080SHZTblRRN1dnbzVLbQpDQUROSVl4MXMzeHIrbXdBZGdCajh0dk42RHZNTE04TGNvUW5WMnN6cEkxaGQ0KzlkYVk0c2Nkb1ZFdllqUUFBCkFXcFZSTkZ3QUFBRUF3QkhNRVVDSVFEYnY2elRmZzRxaVpQaUpBSHFIbWRML1ZUTE9wSUtjNzJLZlppV0pwSlUKUWdJZ0ZTOU1iRkI2UXZJdGRTQmNTRENRRXBTQ2dqODRkb1R3UjRrS0hjY2xrd3N3RFFZSktvWklodmNOQVFFTApCUUFEZ2dFQkFDamxidkpHbGlFYitEbWlHdEZ0RHd0eVpaMk5DR1J5ZldDb1pPb0poSklLMEhvdDhWMlgvLzJ5CnZUKzAwcy83QUttNGttTDBBSlVNbUtiS2hubm5pKzU1alFRTXVxaGFPQVgxZm8xdWdGWHBTNEVCSG1KVTdOQ1MKYTNndmYrVXNVaCtXdzl2ZVhMUnIrYW5rUURyenVpV2pudityUXE1Q3hKU0JtdUY3aWhjS0VLalJXTFVVWEJhaQpTWjJwSmRwSEY0RWlMZWpmVHhlM0lPRlFEYmFBcWd2L0FESkhFeTB1L1doSDk2dzFOZFFyaVArTXdxRXhYenQ2CmhKM1VtSFg4T29pYlZiakhEdzFBMnpRYzZyMmpDZDN2bHNmeGFoMGoxbnlqVHE2Y1FaV05rKzJwU21xTDlodkoKUmNDbXBRcDFnd3VSaTVZbEdGdHY4VmlvLzk5VmNnUT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  defaultKey: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2QUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktZd2dnU2lBZ0VBQW9JQkFRRFVRY2o2ZHdxV0o0NFgKdVdVT0lhUnlGd09FU04zcjR6OURTeldja0RjdXU5ZDZxRnMzU0xGZERua28zdWg2YTZramRyeGVIbkdqQ1FmUgpYOFdXZkI4R3pBQzA0MmE5bWszWXJ5SWt1aWVFVnZVL3BrTU9lS0c0WmFSL2dYNUJRMTVRWFNOOHhaVk1CekhDClBNWlJvT0JyclJkRjdYU0pUOVJ0TnhKYTNHb0J0NjFYZ1RiS1VJL2Jzd1RURE0xQXZ2dUxrMWpodmUxV2RHZ2EKS3NSNlBqWkhUS0pkTUV2YjVrQ3hoUE5jd3lYbVVSVlZPaWFvb0V2aWpVaDBXc2pIUnN0QmxFZkttSjZxWFNnOAo0K0RLQm5xYThXY29LSGkwWXlDRjlYTU9lUEVmcWhzclRyUzl1ZkRwd09zZ2pWbGdhNnpTdzl0L3BHYjFHVTJSCkRHbWgvaHAzQWdNQkFBRUNnZ0VBSjNiSHdGSEx4Ums3b1F1V1QyZFA1T3FFZTk3MGEveEhjZUtVNkRRa0htdE0KYUFEUFhOc0dKeEFlMU11RkcrWFNmOForeFYwUnNjZG5EYldwemczcjB0NnhMdkNzMUluUStYMnVjbmV1Q3p3RAp3ejdOYnU1YzJ5VUN6YllzM0VPRFVKdlFrazFHTWVtUWhkVzQ1Y3BzajNpU1FDMGpJcmlWL1d4azNFSG83OEo1Ckl3aC80VWNSUUVwb2J0S0R3MEkxMGtGUE5LWEdaazdWYi9qUkQ1dG14WVBFSm5qeTFQc25rZjZxcXpnc3hYUS8KSXMwbXo1bTc5V1lIYjRqa0w5TkQzTmwxZk5mdGxSZFZ4OW0xcUp5TnlXcVIvaVpBY2VUR3NmbDNGT01MTldpRApyazhlNjVYdVRqYlJrQzN3SG9Xc3d3amN1SFNTb0RQNFNlUURybUxiVVFLQmdRRHVjUjAybkI2cU9aRGw1QjVjCklYQ3NESDFmK3loZEhUd0RCT2NTUWpyeHJUODRiQ3R3bkZGd3FXYmpiQWM2QWxFc2Z6UDA1Ti8zZk1sTTE4M3AKWVVmb3dVZnVoSUNIZEV0VDhCYzNQSm1DdjdoYVc2ZnBFOTFYMGdIU3AvdXVFYW5VTFExVGRnaTFVVGg2OERpLwpiUGRjYThSVmdBQ3ZPM0FMcXdueGp5aGV6d0tCZ1FEajR3N0p5cXlmZnczLzVjVzcrOUpQcDV3NzRUVEsvRFE0CkplQ29NRHJFVjBYcVRkdUxwU1FsLzhydlcyeGI0UFB4V0FaSlhRdXpKYlZDTzhEQU5KSnJhdEhnckZ2Nzlpa2gKcHlFMjhIQk00ZFZVb3RCMzdPTWpONEpuMElWMEg0eSttb2NiQW5nbkJraWR3aUFkRDZ5aWFJVEttOWFwOHFCUgpiV2k3SUpXejJRS0JnQ2xiTnl6c29TajNPUm1XbW1seVoxOS8veEx4dGd1SWNZczRnM2VZUXk3OTFKUk50cThlCmZjV2pyRFBQM2VVQzE5OTI1S1VhT1hwc2kyR25vSkJWRGlyaHN6ODhmaXFBVWp4cHpTMElkcnZGMHd6aER0dVAKVlhuUTgvMzhvdHVMTnNDVlc5VlpDS09pUmNDVS85Szc3Sjk4Rlo2YXlBT2N0STloaUNUOHBvempBb0dBYlZ2WApDdXRoNzZCdlBYQXNkY3VnMzJ6VndyNk9NU0xhaEY5WThoMUM5bG5UU1Y5WGppb1BzTlNSdEUreExsNURjbndGCmVFdFlnLzRDZitoZzFWdmxML3N4QUpwMkFmSGRSek1HODNCcTA5cEVIN3VLUXlMQTFYT2I5dW5RUVN1cXhRVXUKOUwwNG43R2FRMnFYTXBzRkEyTVk1b25tZCtQaEgzSmJvZ0UvRmZFQ2dZQjZ5MVh5QUltMjU3OHMvdW9OWUMyNQpqZ0w1Q2lvSmlzVUlYU21VZE5zZnoyY1FES3lqczF4a0gybEVxbzJQY015ZXlTOE5XK2FJaGF2L3VRK2kraytiCk5PRElOVkZ6SE1qcE1sRVVwSGRVWjdFUHI3RkVkWWdsNGt3NFZPNGVHSDFHUWxDb2VPcEFxM1FVTnh2endua08KY2JEdUQvbkdON0E1dUFwSDhRN0RRQT09Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+  # Basic auth to protect all the routes. Can use htpasswd to generate passwords
+  # > htpasswd -n -b testuser testpass
+  # > testuser:$apr1$JXRA7j2s$LpVns9vsme8FHN0r.aSt11
+  auth: {}
+    # basic:
+    #   testuser: $apr1$JXRA7j2s$LpVns9vsme8FHN0r.aSt11
+
+kvprovider:
+  ## If you want to run Traefik in HA mode, you will need to setup a KV Provider. Therefore you can choose one of
+  ## * etcd
+  ## * consul
+  ## * boltdb
+  ## * zookeeper
+  ##
+  ## ref: https://docs.traefik.io/user-guide/cluster/
+
+  ## storeAcme has to be enabled to support HA Support using acme, but at least one kvprovider is needed
+  storeAcme: false
+  importAcme: false
+
+  # etcd:
+    # endpoint: etcd-service:2379
+    # useAPIV3: false
+    # watch: true
+    # prefix: traefik
+
+    ## Override default configuration template.
+    ## For advanced users :)
+    ##
+    ## Optional
+    # filename: consul.tmpl
+    # username: foo
+    # password: bar
+    # tls:
+    #   ca: "/etc/ssl/ca.crt"
+    #   cert: "/etc/ssl/consul.crt"
+    #   key: "/etc/ssl/consul.key"
+    #   insecureSkipVerify: true
+    #
+  # consul:
+    # endpoint: consul-service:8500
+    # watch: true
+    # prefix: traefik
+
+    ## Override default configuration template.
+    ## For advanced users :)
+    ##
+    ## Optional
+    # filename: consul.tmpl
+    # username: foo
+    # password: bar
+    # tls:
+    #   ca: "/etc/ssl/ca.crt"
+    #   cert: "/etc/ssl/consul.crt"
+    #   key: "/etc/ssl/consul.key"
+    #   insecureSkipVerify: true
+
+    ## only relevant for etcd
+
+
+acme:
+  enabled: false
+  email: admin@example.com
+  onHostRule: true
+  staging: true
+  logging: false
+  # Configure a Let's Encrypt certificate to be managed by default.
+  # This is the only way to request wildcard certificates (works only with dns challenge).
+  domains:
+    enabled: false
+    # List of sets of main and (optional) SANs to generate for
+    # for wildcard certificates see https://docs.traefik.io/configuration/acme/#wildcard-domains
+    domainsList:
+      # - main: "*.example.com"
+      # - sans:
+      #   - "example.com"
+      # - main: "*.example2.com"
+      # - sans:
+      #   - "test1.example2.com"
+      #   - "test2.example2.com"
+  ## ACME challenge type: "tls-sni-01", "tls-alpn-01", "http-01" or "dns-01"
+  ## Note the chart's default of tls-sni-01 has been DEPRECATED and (except in
+  ## certain circumstances) DISABLED by Let's Encrypt. It remains as a default
+  ## value in this chart to preserve legacy behavior and avoid a breaking
+  ## change. Users of this chart should strongly consider making the switch to
+  ## the recommended "tls-alpn-01" (avaialbe since v1.7), dns-01 or http-01
+  ## (available since v1.5) challenge.
+  challengeType: tls-sni-01
+  ## Configure dnsProvider to perform domain verification using dns challenge
+  ## Applicable only if using the dns-01 challenge type
+  delayBeforeCheck: 0
+  resolvers: []
+    # - 1.1.1.1:53
+    # - 8.8.8.8:53
+  dnsProvider:
+    name: nil
+    existingSecretName: ""
+    auroradns:
+      AURORA_USER_ID: ""
+      AURORA_KEY: ""
+      AURORA_ENDPOINT: ""
+    azure:
+      AZURE_CLIENT_ID: ""
+      AZURE_CLIENT_SECRET: ""
+      AZURE_SUBSCRIPTION_ID: ""
+      AZURE_TENANT_ID: ""
+      AZURE_RESOURCE_GROUP: ""
+    cloudflare:
+      CLOUDFLARE_EMAIL: ""
+      CLOUDFLARE_API_KEY: ""
+    digitalocean:
+      DO_AUTH_TOKEN: ""
+    dnsimple:
+      DNSIMPLE_OAUTH_TOKEN: ""
+      DNSIMPLE_BASE_URL: ""
+    dnsmadeeasy:
+      DNSMADEEASY_API_KEY: ""
+      DNSMADEEASY_API_SECRET: ""
+      DNSMADEEASY_SANDBOX: ""
+    dnspod:
+      DNSPOD_API_KEY: ""
+    dreamhost:
+      DREAMHOST_API_KEY: ""
+    dyn:
+      DYN_CUSTOMER_NAME: ""
+      DYN_USER_NAME: ""
+      DYN_PASSWORD: ""
+    exoscale:
+      EXOSCALE_API_KEY: ""
+      EXOSCALE_API_SECRET: ""
+      EXOSCALE_ENDPOINT: ""
+    gandi:
+      GANDI_API_KEY: ""
+    godaddy:
+      GODADDY_API_KEY: ""
+      GODADDY_API_SECRET: ""
+    gcloud:
+      GCE_PROJECT: ""
+      GCE_SERVICE_ACCOUNT_FILE: ""
+    linode:
+      LINODE_API_KEY: ""
+    namecheap:
+      NAMECHEAP_API_USER: ""
+      NAMECHEAP_API_KEY: ""
+    ns1:
+      NS1_API_KEY: ""
+    otc:
+      OTC_DOMAIN_NAME: ""
+      OTC_USER_NAME: ""
+      OTC_PASSWORD: ""
+      OTC_PROJECT_NAME: ""
+      OTC_IDENTITY_ENDPOINT: ""
+    ovh:
+      OVH_ENDPOINT: ""
+      OVH_APPLICATION_KEY: ""
+      OVH_APPLICATION_SECRET: ""
+      OVH_CONSUMER_KEY: ""
+    pdns:
+      PDNS_API_URL: ""
+    rackspace:
+      RACKSPACE_USER: ""
+      RACKSPACE_API_KEY: ""
+    rfc2136:
+      RFC2136_NAMESERVER: ""
+      RFC2136_TSIG_ALGORITHM: ""
+      RFC2136_TSIG_KEY: ""
+      RFC2136_TSIG_SECRET: ""
+      RFC2136_TIMEOUT: ""
+    route53:
+      AWS_REGION: ""
+      AWS_ACCESS_KEY_ID: ""
+      AWS_SECRET_ACCESS_KEY: ""
+    vultr:
+      VULTR_API_KEY: ""
+  ## Save ACME certs to a persistent volume.
+  ## WARNING: If you do not do this and you did not have configured
+  ## a kvprovider, you will re-request certs every time a pod (re-)starts
+  ## and you WILL be rate limited!
+  persistence:
+    enabled: true
+    annotations: {}
+    ## acme data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+    accessMode: ReadWriteOnce
+    size: 1Gi
+    ## A manually managed Persistent Volume Claim
+    ## Requires persistence.enabled: true
+    ## If defined, PVC must be created manually before volume will be bound
+    ##
+    # existingClaim:
+dashboard:
+  enabled: true
+  domain: traefik.scrollx.xyz
+  # serviceType: ClusterIP
+  service: {}
+    # annotations:
+    #   key: value
+  ingress: {}
+    # annotations:
+    #   key: value
+    # labels:
+    #   key: value
+    # tls:
+      # - hosts:
+      #   - traefik.example.com
+      #   secretName: traefik-default-cert
+  auth: {}
+    # basic:
+    #   username: password
+  statistics: {}
+    ## Number of recent errors to show in the ‘Health’ tab
+    # recentErrors:
+service:
+  # annotations:
+  #   key: value
+  # labels:
+  #   key: value
+  ## Further config for service of type NodePort
+  ## Default config with empty string "" will assign a dynamic
+  ## nodePort to http and https ports
+  nodePorts:
+    http: ""
+    https: ""
+  ## If static nodePort configuration is required it can be enabled as below
+  ## Configure ports in allowable range (eg. 30000 - 32767 on minikube)
+  # nodePorts:
+  #   http: 30080
+  #   https: 30443
+gzip:
+  enabled: true
+traefikLogFormat: json
+accessLogs:
+  enabled: true
+  ## Path to the access logs file. If not provided, Traefik defaults it to stdout.
+  # filePath: ""
+  format: common  # choices are: common, json
+  ## for JSON logging, finer-grained control over what is logged. Fields can be
+  ## retained or dropped, and request headers can be retained, dropped or redacted
+  fields:
+    # choices are keep, drop
+    defaultMode: keep
+    names: {}
+      # ClientUsername: drop
+    headers:
+      # choices are keep, drop, redact
+      defaultMode: keep
+      names: {}
+        # Authorization: redact
+rbac:
+  enabled: false
+## Enable the /metrics endpoint, for now only supports prometheus
+## set to true to enable metric collection by prometheus
+metrics:
+  prometheus:
+    enabled: false
+    ## If true, prevents exposing port 8080 on the main Traefik service, reserving
+    ## it to the dashboard service only
+    restrictAccess: false
+    # buckets: [0.1,0.3,1.2,5]
+  datadog:
+    enabled: false
+    # address: localhost:8125
+    # pushinterval: 10s
+  statsd:
+    enabled: false
+    # address: localhost:8125
+    # pushinterval: 10s
+deployment:
+  # labels to add to the pod container metadata
+  # podLabels:
+  #   key: value
+  # podAnnotations:
+  #   key: value
+  hostPort:
+    httpEnabled: false
+    httpsEnabled: false
+    dashboardEnabled: false
+    # httpPort: 80
+    # httpsPort: 443
+    # dashboardPort: 8080
+sendAnonymousUsage: false
+tracing:
+  enabled: true
+  serviceName: traefik
+  backend: jaeger
+  jaeger:
+    localAgentHostPort: "jaeger-agent.jaeger:6831"
+    samplingServerURL: http://jaeger-agent.jaeger:5778/sampling
+    samplingType: const
+    # samplingParam: 1.0
+  # zipkin:
+  #   httpEndpoint: http://localhost:9411/api/v1/spans
+  #   debug: false
+  #   sameSpan: false
+  #   id128bit: true
+  # datadog:
+  #   localAgentHostPort: "127.0.0.1:8126"
+  #   debug: false
+  #   globalTag: ""
+
+## Create HorizontalPodAutoscaler object.
+##
+# autoscaling:
+#   minReplicas: 1
+#   maxReplicas: 10
+#   metrics:
+#   - type: Resource
+#     resource:
+#       name: cpu
+#       targetAverageUtilization: 60
+#   - type: Resource
+#     resource:
+#       name: memory
+#       targetAverageUtilization: 60
+
+## Timeouts
+##
+# timeouts:
+#   ## responding are timeouts for incoming requests to the Traefik instance
+#   responding:
+#     readTimeout: 0s
+#     writeTimeout: 0s
+#     idleTimeout: 180s
+#   ## forwarding are timeouts for requests forwarded to the backend servers
+#   forwarding:
+#     dialTimeout: 30s
+#     responseHeaderTimeout: 0s
