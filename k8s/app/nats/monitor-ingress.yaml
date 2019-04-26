@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: monitor
+  namespace: nats
+spec:
+  rules:
+    - host: nats.scrollx.xyz
+      http:
+        paths:
+          - backend:
+              serviceName: nats-cluster-mgmt
+              servicePort: 8222
