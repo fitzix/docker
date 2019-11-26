@@ -3,22 +3,21 @@ kind: Ingress
 metadata:
   name: test-ingress
   annotations:
-    nginx.ingress.kubernetes.io/secure-backends: "true"
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/secure-backends: 'true'
+    nginx.ingress.kubernetes.io/ssl-passthrough: 'true'
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   tls:
     - hosts:
-      - fitzix.io
+        - fitzix.io
       secretName: tls-ingress
   rules:
-    - host: fitzix.io
+    - host: fitzix.iok8s
       http:
         paths:
           - backend:
               serviceName: nginx-service
               servicePort: 80
-
 # ---
 # apiVersion: extensions/v1beta1
 # kind: Ingress

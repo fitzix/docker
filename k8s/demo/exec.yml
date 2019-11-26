@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fitzix-exec
+spec:
+  containers:
+    - name: k8sexec
+      image: fitzix/k8sexec:0.0.1
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine
+spec:
+  containers:
+    - name: alpine
+      image: alpine:latest
