@@ -1,0 +1,27 @@
+version: '3.1'
+
+services:
+  mongo:
+    image: mongo:4
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: yapi
+    volumes:
+      - ./mongo/db:/data/db
+    networks:
+      - yapi
+  yapi:
+    image: fitzix/yapi
+    volumes:
+      - ./config.json:/yapi/config.json
+    ports:
+      - 3000:3000
+    # 第一次启动需要执行 yarn install-server 初始化数据
+    # commond:  sh -c "/wait && cd vendors && yarn install-server && yarn start"
+    command: sh -c "/wait && cd vendors && yarn install-server && yarn start"
+    environment:
+      WAIT_HOSTS: mongo:27017
+    networks:
+      - yapi
+networks:
+  yapi:
